@@ -19,8 +19,13 @@ public class Aluno extends Pessoa {
         this.numeroMatricula = numeroMatricula;
     }
 
-    public boolean isCursando() {
-        return cursando;
+    public void isCursando() {
+    	if (cursando) {
+    		System.out.print("cursando");
+    	} else {
+    		System.out.print("matrícula trancada");
+    		
+    	}
     }
 
     public void setCursando(boolean cursando) {

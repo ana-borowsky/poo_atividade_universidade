@@ -30,4 +30,13 @@ public class Disciplina {
             this.alunos.add(aluno); 
         }
     }
+    
+    public void isAtiva() {
+    	if (ativa) {
+    		System.out.print("ativa");
+    	} else {
+    		System.out.print("inativa");
+    		
+    	}
+    }
 }
