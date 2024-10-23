@@ -65,11 +65,11 @@ public class Main {
         disciplina5.adicionarAluno(aluno8);
         disciplina5.adicionarAluno(aluno5);
        
-        imprimeMenuPrincipal(sc, alunos, disciplinas, professores);
+        imprimeMenuPrincipal(sc, disciplinas, alunos, professores);
         sc.close();
  }
 
-    public static void imprimeMenuPrincipal(Scanner sc, ArrayList<Aluno> alunos, ArrayList<Disciplina> disciplinas, ArrayList<Professor> professores) {
+    public static void imprimeMenuPrincipal(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {
         int option = 0;
         boolean loop = true;
 
@@ -94,17 +94,17 @@ public class Main {
 
             switch (option) {
                 case 1:
-                	imprimeMenuDisciplinas(sc, disciplinas, alunos);
+                	imprimeMenuDisciplinas(sc, disciplinas, alunos, professores);
                     loop = false; 
                     break;
 
                 case 2:
-                	imprimeMenuAlunos(sc, alunos, disciplinas, professores);
+                	imprimeMenuAlunos(sc, disciplinas, alunos, professores);
                     loop = false;
                     break;
                 
                 case 3:
-                	imprimeMenuProfessores(sc, alunos, disciplinas, professores);
+                	imprimeMenuProfessores(sc, disciplinas, alunos, professores);
                     loop = false;
                     break;
 
@@ -119,7 +119,7 @@ public class Main {
         }
     }
 
-    public static void imprimeMenuDisciplinas(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos) {
+    public static void imprimeMenuDisciplinas(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {
         int option = 0;
         boolean loop = true;
 
@@ -159,11 +159,11 @@ public class Main {
                     break;
 
                 case 3:
-                	buscaAlunosPorDisciplina(sc, disciplinas, alunos);
+                	menuAlunosPorDisciplina(sc, disciplinas, alunos, professores);
                     break;
 
                 case 4:
-                	imprimeMenuPrincipal(sc, null, disciplinas, null);
+                	imprimeMenuPrincipal(sc, disciplinas, alunos, professores);
                     loop = false; 
                     return;
 
@@ -173,7 +173,7 @@ public class Main {
         }
     }
 
-    public static void imprimeMenuAlunos(Scanner sc, ArrayList<Aluno> alunos, ArrayList<Disciplina> disciplinas, ArrayList<Professor> professores) { 
+    public static void imprimeMenuAlunos(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) { 
         int option = 0;
         boolean loop = true;
 
@@ -206,11 +206,11 @@ public class Main {
                     break;
 
                 case 2:
-                	buscaAluno(sc, alunos); 
+                	imprimeMenuBuscaAluno(sc, disciplinas, alunos, professores);
                     break;
 
                 case 3:
-                	imprimeMenuPrincipal(sc, alunos, disciplinas, professores);
+                	imprimeMenuPrincipal(sc, disciplinas, alunos, professores);
                     loop = false; 
                     return;
 
@@ -220,7 +220,7 @@ public class Main {
         }
     }
     
-    public static void imprimeMenuProfessores(Scanner sc, ArrayList<Aluno> alunos, ArrayList<Disciplina> disciplinas, ArrayList<Professor> professores) { 
+    public static void imprimeMenuProfessores(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {
         int option = 0;
         boolean loop = true;
 
@@ -250,7 +250,7 @@ public class Main {
                     break;
 
                 case 2:
-                	imprimeMenuPrincipal(sc, alunos, disciplinas, professores);
+                	imprimeMenuPrincipal(sc, disciplinas, alunos, professores);
                     loop = false; 
                     return;
 
@@ -260,55 +260,81 @@ public class Main {
         }
     }
     
-    public static void buscaAluno(Scanner sc, ArrayList<Aluno> alunos) {
-        System.out.println("-----BUSCA DE ALUNOS-----"
-        		+ "\n[ 1 ] Por nome"
-        		+ "\n[ 2 ] Por número de matrícula"
-        		+ "\nSua escolha: ");
-        int escolha = sc.nextInt();
-        sc.nextLine();
+    public static void imprimeMenuBuscaAluno(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) { 
+        int option = 0;
+        boolean loop = true;
 
-        if (escolha == 1) {
-            System.out.print("Digite o nome do aluno: ");
-            String nomeBusca = sc.nextLine();
-            boolean encontrado = false;
-            for (Aluno aluno : alunos) {
-                if (aluno.getNome().equalsIgnoreCase(nomeBusca)) {
-                    System.out.println("Aluno encontrado: " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula());
-                    encontrado = true;
-                }
+        String MENU_BUSCA_ALUNOS = "-----BUSCA DE ALUNOS-----"
+        		+ "\n1. Por nome"
+        		+ "\n2. Por número de matrícula"
+        		+ "\n3. Voltar"
+        		+ "\nSua escolha: ";
+
+        while (loop) {
+            System.out.println(MENU_BUSCA_ALUNOS);
+
+            if (!sc.hasNextInt()) {
+                System.out.println("Por favor, insira um número válido.");
+                sc.next(); 
+                continue;
             }
-            if (!encontrado) {
-                System.out.println("Aluno não encontrado.");
+
+            option = sc.nextInt();
+            sc.nextLine();
+
+            switch (option) {
+                case 1:
+                	buscaAlunoPorNome(sc, disciplinas, alunos, professores);
+                    break;
+
+                case 2:
+                	buscaAlunoPorMatricula(sc, disciplinas, alunos, professores);
+                    break;
+
+                case 3:
+                	imprimeMenuAlunos(sc, disciplinas, alunos, professores);
+                    loop = false; 
+                    return;
+
+                default:
+                    System.out.println("Opção Inválida! Por favor, escolha uma opção de 1 a 3.");
             }
-        } else if (escolha == 2) {
-            System.out.print("Digite o número de matrícula: ");
-            String matriculaBusca = sc.nextLine();
-            boolean encontrado = false;
-            for (Aluno aluno : alunos) {
-                if (aluno.getNumeroMatricula().equalsIgnoreCase(matriculaBusca)) {
-                    System.out.println("Aluno encontrado: " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula());
-                    encontrado = true;
-                }
-            }
-            if (!encontrado) {
-                System.out.println("Aluno não encontrado.");
-            }
-        } else {
-            System.out.println("Escolha inválida. Retornando ao menu anterior.");
         }
     }
     
-    public static void buscaAlunosPorDisciplina(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos) {
-        System.out.println("-----LISTA DE ALUNOS-----"
-        		+ "\n[ 1 ] Por nome da disciplina"
-        		+ "\n[ 2 ] Pelo códgo da disciplina"
-        		+ "\nSua escolha: ");
+    public static void buscaAlunoPorNome(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {      
+        System.out.print("Digite o nome do aluno: ");
+        String nomeBusca = sc.nextLine();
+        boolean encontrado = false;
+        for (Aluno aluno : alunos) {
+            if (aluno.getNome().equalsIgnoreCase(nomeBusca)) {
+                System.out.println("Aluno encontrado: " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula() + "\n");
+                encontrado = true;
+            }}
         
-        int escolha = sc.nextInt();
-        sc.nextLine();
-
-        if (escolha == 1) {
+        if (!encontrado) {
+            System.out.println("Aluno não encontrado.\n");
+            }
+        
+   }
+            
+    public static void buscaAlunoPorMatricula(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {               
+        System.out.print("Digite o número de matrícula: ");
+        String matriculaBusca = sc.nextLine();
+        boolean encontrado = false;
+        for (Aluno aluno : alunos) {
+            if (aluno.getNumeroMatricula().equalsIgnoreCase(matriculaBusca)) {
+                System.out.println("Aluno encontrado: " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula() + "\n");
+                encontrado = true;
+            }
+        }
+        
+        if (!encontrado) {
+            System.out.println("Aluno não encontrado.\n");
+        }
+    }
+    
+    public static void buscaAlunoPorNomeDisciplina(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {
             System.out.print("Digite o nome da disciplina: ");
             String nomeBusca = sc.nextLine();
             boolean encontrado = false;
@@ -317,36 +343,79 @@ public class Main {
                     System.out.println("Alunos matriculados em " + disciplina.nome + ":");
                     for (Aluno aluno : alunos) {
                         if (aluno.getDisciplinas().contains(disciplina)) {
-                            System.out.println("\t - " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula());
+                            System.out.println("\t - " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula() + "\n");
                             encontrado = true;
                         }
                     }
-                }
-            }
+                }}
+            
             if (!encontrado) {
-                System.out.println("Nenhum aluno encontrado na disciplina " + nomeBusca + ".");
+                System.out.println("Nenhum aluno encontrado na disciplina " + nomeBusca + ".\n");
             }
-        } else if (escolha == 2) {
-            System.out.print("Digite o código da disciplina: ");
-            String codigoBusca = sc.nextLine();
-            boolean encontrado = false;
-            for (Disciplina disciplina : disciplinas) {
-                if (disciplina.codigo.equalsIgnoreCase(codigoBusca)) {
-                    System.out.println("Alunos matriculados em " + disciplina.nome + ":");
-                    for (Aluno aluno : alunos) {
-                        if (aluno.getDisciplinas().contains(disciplina)) {
-                            System.out.println("\t - " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula());
-                            encontrado = true;
-                        }
+            
+      }
+            
+    public static void buscaAlunoPorCodigoDisciplina(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) {
+        System.out.print("Digite o código da disciplina: ");
+        String codigoBusca = sc.nextLine();
+        boolean encontrado = false;
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.codigo.equalsIgnoreCase(codigoBusca)) {
+                System.out.println("Alunos matriculados em " + disciplina.nome + ":");
+                for (Aluno aluno : alunos) {
+                    if (aluno.getDisciplinas().contains(disciplina)) {
+                        System.out.println("\t - " + aluno.getNome() + " - Matrícula: " + aluno.getNumeroMatricula() + "\n");
+                        encontrado = true;
                     }
                 }
-            }
-            if (!encontrado) {
-                System.out.println("Nenhum aluno encontrado na disciplina com código " + codigoBusca + ".");
-            }
-        } else {
-            System.out.println("Escolha inválida. Retornando ao menu anterior.");
-        }
+            }}
+        
+        if (!encontrado) {
+            System.out.println("Nenhum aluno encontrado na disciplina com código " + codigoBusca + ".\n");
+        	}
+        
+
     }
 
+    public static void menuAlunosPorDisciplina(Scanner sc, ArrayList<Disciplina> disciplinas, ArrayList<Aluno> alunos, ArrayList<Professor> professores) { 
+        int option = 0;
+        boolean loop = true;
+
+        String MENU_BUSCA_ALUNOS = "-----LISTA DE ALUNOS-----"
+        		+ "\n1. Por nome da disciplina"
+        		+ "\n2. Pelo códgo da disciplina"
+        		+ "\n3. Voltar"
+        		+ "\nSua escolha: ";
+
+        while (loop) {
+            System.out.println(MENU_BUSCA_ALUNOS);
+
+            if (!sc.hasNextInt()) {
+                System.out.println("Por favor, insira um número válido.");
+                sc.next(); 
+                continue;
+            }
+
+            option = sc.nextInt();
+            sc.nextLine();
+
+            switch (option) {
+                case 1:
+                	buscaAlunoPorNomeDisciplina(sc, disciplinas, alunos, professores);
+                    break;
+
+                case 2:
+                	buscaAlunoPorCodigoDisciplina(sc, disciplinas, alunos, professores);
+                    break;
+
+                case 3:
+                	imprimeMenuDisciplinas(sc, disciplinas, alunos, professores);
+                    loop = false; 
+                    return;
+
+                default:
+                    System.out.println("Opção Inválida! Por favor, escolha uma opção de 1 a 3.");
+            }
+        }
+    }
 }
