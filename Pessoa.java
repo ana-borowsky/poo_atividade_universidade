@@ -2,6 +2,12 @@ public abstract class Pessoa {
     private String nome;
     private String cpf;
     private int dataNascimento;
+    
+    public Pessoa(String nome, String cpf, int dataNascimento) {
+    	this.nome = nome;
+    	this.cpf = cpf;
+    	this.dataNascimento = dataNascimento;
+    }
 
 
     public String getNome() {
