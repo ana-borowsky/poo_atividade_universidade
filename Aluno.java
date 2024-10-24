@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Aluno extends Pessoa {
     private String numeroMatricula;
@@ -10,7 +11,6 @@ public class Aluno extends Pessoa {
         this.disciplinas = new ArrayList<>();
     }
 
-    
     public String getNumeroMatricula() {
         return numeroMatricula;
     }
@@ -19,13 +19,8 @@ public class Aluno extends Pessoa {
         this.numeroMatricula = numeroMatricula;
     }
 
-    public void isCursando() {
-    	if (cursando) {
-    		System.out.print("cursando");
-    	} else {
-    		System.out.print("matrícula trancada");
-    		
-    	}
+    public boolean isCursando() {
+    	return cursando;
     }
 
     public void setCursando(boolean cursando) {
@@ -39,5 +34,15 @@ public class Aluno extends Pessoa {
     public void adicionarDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
         disciplina.adicionarAluno(this);
+    }
+    
+    public void alteraDadosCadastrais(Scanner sc) {
+		System.out.print("Digite o novo número de matrícula: ");
+	    String novaMatricula = sc.nextLine();
+	    this.setNumeroMatricula(novaMatricula);
+	    System.out.print("Digite o novo status (true ou false): ");
+	    String novoStatus = sc.nextLine();
+        this.setCursando(novoStatus.equalsIgnoreCase("true"));
+        System.out.println("Dados alterados com sucesso!");
     }
 }

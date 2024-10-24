@@ -31,12 +31,7 @@ public class Disciplina {
         }
     }
     
-    public void isAtiva() {
-    	if (ativa) {
-    		System.out.print("ativa");
-    	} else {
-    		System.out.print("inativa");
-    		
-    	}
+    public boolean isAtiva() {
+    	return ativa;
     }
 }
